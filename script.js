@@ -4,14 +4,17 @@ const input = document.querySelector(".search");
 const buton = document.querySelector(".buton");
 const userContainer = document.querySelector(".user-container");
 const followersContainer = document.querySelector(".followers-Container");
-// console.log(followersContainer)
 
-// console.log(buton)
+
 buton.addEventListener("click", () => {
-  if(input.value  !== ""){
-  getUser()}
+  
+  if (input.value !== "") {
+    getUser();
+    
+  }
+  input.value = "";
 });
-input.addEventListener("keypress", function(event) {
+input.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();
     buton.click();
@@ -22,7 +25,6 @@ input.addEventListener("keypress", function(event) {
 
 // function getUser(user) {
 //   const url = base_url + user
-//   // https://api.github.com/users/bengin34
 //   try {
 //     fetch(url).then(res => res.json().then(data => console.log(data)))
 //   } catch (error) {
@@ -31,17 +33,15 @@ input.addEventListener("keypress", function(event) {
 // }
 // getUser()
 
-
 // async await yapısı
 
 async function getUser() {
   const url = base_url + input.value;
 
-
   try {
     const res = await fetch(url);
     const data = await res.json();
-    
+
     const {
       avatar_url,
       followers,
@@ -102,10 +102,11 @@ async function getUser() {
       </div>
     </div>
   </div>  `;
-    getFollowings(followers_url);
+
+  getFollowings(followers_url);
   } catch (error) {
     console.log(error);
-    userContainer.innerHTML = `<h1 class="text-danger" >hhlkjlkjkj</h1>`;
+    userContainer.innerHTML = `<h1 class="text-danger" > hata </h1>`;
   }
 }
 // getUser()
@@ -115,26 +116,23 @@ async function getFollowings(followers_url) {
     const res = await fetch(followers_url);
     const followers = await res.json();
     console.log(followers);
-    
+    followersContainer.innerHTML = ""
     followers.forEach((user) => {
-     
-     console.log(user);
+      const {
+        avatar_url,
+        followers,
+        followers_url,
+        following,
+        following_url,
+        html_url,
+        public_repos,
+        id,
+        login,
 
-     const {
-      avatar_url,
-      followers,
-      followers_url,
-      following,
-      following_url,
-      html_url,
-      public_repos,
-      id,
-      login,
+        location,
+      } = user;
+
       
-      location,
-    } = user;
-
-
       followersContainer.innerHTML += `
       
       
@@ -152,11 +150,10 @@ async function getFollowings(followers_url) {
       <div class="mt-5 text-center">
         <h4 class="mb-0">${login}</h4>
       </div>
-    </div> `
-    })
-      
+    </div> `;
+    });
+    
   } catch (error) {
     console.log(error);
   }
 }
-
